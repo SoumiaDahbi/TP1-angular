@@ -1,0 +1,78 @@
+<div class="form-container">
+  <h2>Inscription - Reactive Forms</h2>
+
+  <form [formGroup]="inscriptionForm" (ngSubmit)="onSubmit()">
+
+    <!-- Nom Complet -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nom Complet</mat-label>
+      <input matInput type="text" formControlName="fullname" />
+      <mat-error *ngIf="inscriptionForm.get('fullname')?.touched && inscriptionForm.get('fullname')?.invalid">
+        <span *ngIf="inscriptionForm.get('fullname')?.hasError('required')">
+          Le nom complet est obligatoire.
+        </span>
+        <span *ngIf="inscriptionForm.get('fullname')?.hasError('minlength')">
+          Le nom doit contenir au moins 3 caractères.
+        </span>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Age -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Age</mat-label>
+      <input matInput type="number" formControlName="age" />
+      <mat-error *ngIf="inscriptionForm.get('age')?.touched && inscriptionForm.get('age')?.invalid">
+        <span *ngIf="inscriptionForm.get('age')?.hasError('required')">
+          L'âge est obligatoire.
+        </span>
+        <span *ngIf="inscriptionForm.get('age')?.hasError('min')">
+          Vous devez avoir au moins 18 ans.
+        </span>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Pays -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Pays</mat-label>
+      <mat-select formControlName="country">
+        <mat-option *ngFor="let p of paysList" [value]="p.value">
+          {{ p.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="inscriptionForm.get('country')?.touched && inscriptionForm.get('country')?.invalid">
+        Veuillez sélectionner un pays.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Email -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email" />
+      <mat-error *ngIf="inscriptionForm.get('email')?.touched && inscriptionForm.get('email')?.invalid">
+        <span *ngIf="inscriptionForm.get('email')?.hasError('required')">
+          L'email est obligatoire.
+        </span>
+        <span *ngIf="inscriptionForm.get('email')?.hasError('email')">
+          Format d'email invalide.
+        </span>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Bouton de soumission -->
+    <div class="button-container">
+      <button
+        mat-raised-button
+        type="submit"
+        [disabled]="inscriptionForm.invalid"
+      >
+        S'inscrire
+      </button>
+    </div>
+  </form>
+
+  <!-- Récapitulatif après validation -->
+  <div *ngIf="submittedData" class="result-section">
+    <div class="success-banner">Inscription réussie !</div>
+    <pre class="json-box">{{ submittedData | json }}</pre>
+  </div>
+</div>
